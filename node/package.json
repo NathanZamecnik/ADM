@@ -1,0 +1,14 @@
+{
+  "name": "sample",
+  "version": "0.0.1",
+  "description": "",
+  "main": "sample.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "mongodb": "latest"
+  },
+  "author": "@nleite",
+  "license": "ISC"
+}
