@@ -1,36 +1,13 @@
 package sample;
 
 import java.net.UnknownHostException;
-import java.util.UUID;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.BulkWriteOperation;
-import com.mongodb.BulkWriteResult;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
 
 public class Main {
 
-    private static void bulkInsert(DBCollection col) {
-
-        BulkWriteOperation bulk = col.initializeUnorderedBulkOperation();
-
-        for (int i = 0; i < 100; i++) {
-            DBObject obj = new BasicDBObject();
-            obj.put("counter", i);
-            // lets just use UUID randomUUID - keep it simple
-            String msg = UUID.randomUUID().toString();
-            obj.put("msg", msg);
-            bulk.insert(obj);
-        }
-
-        BulkWriteResult res = bulk.execute();
-        System.out.println("Bulk Insert");
-        System.out.println(res);
-
-    }
 
     public static void main(String[] args) {
 
@@ -59,6 +36,13 @@ public class Main {
             operator.applyEach();
             
             operator.applyElemMatch();
+            
+            
+            BulkInsert bulkInsert = new BulkInsert(db.getCollection("bulkdata"));
+            bulkInsert.orderedBulkInsert();
+            bulkInsert.unOrderedBulkInsert();
+            
+            
             while (t.isAlive()) {
             }
         } catch (UnknownHostException e) {
