@@ -56,6 +56,7 @@ public class Main {
             operator.applyPush();
             operator.applyPop();
             operator.applyAddToSet();
+            operator.applyEach();
             
             operator.applyElemMatch();
             while (t.isAlive()) {

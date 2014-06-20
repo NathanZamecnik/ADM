@@ -7,7 +7,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.mongodb.QueryBuilder;
-import com.mongodb.QueryOperators;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
@@ -133,12 +132,12 @@ public class OperatorsOplog {
         update = new BasicDBObject( "$pop" , new BasicDBObject( "arr", -1 )  );
         this.collection.update(query, update);
         
-//        Thread.sleep(100);
-//        System.out.println("Applying pull");
-//        //{$pull: {arr: 1 }}
-//        update = new BasicDBObject( "$pull" , new BasicDBObject( "arr", 1 )  );
-//        this.collection.update(query, update);
-        //TODO Check the $pull statement 
+        Thread.sleep(100);
+        System.out.println("Applying pull");
+        //{$pull: {arr: 3 }}
+        //removes value 3 from array
+        update = new BasicDBObject( "$pull" , new BasicDBObject( "arr", 3 )  );
+        this.collection.update(query, update);
     }
     
     
@@ -157,7 +156,7 @@ public class OperatorsOplog {
         this.collection.update(query, update);
         
         System.out.println("Applying addToSet existing element");
-//        Thread.sleep(100);
+        Thread.sleep(100);
         query = new BasicDBObject("_id", _id);
         update = new BasicDBObject( "$addToSet" , new BasicDBObject( "arr", 5 )  );
         this.collection.update(query, update);
@@ -165,16 +164,20 @@ public class OperatorsOplog {
     
     
     public void applyEach(){
+        //insert document 
+        String _id = "each";
+        DBObject obj = new BasicDBObject("_id", _id);
+        String[] arr = {"some"};
+        obj.put("arr", arr);
+        this.collection.insert(obj, WriteConcern.NORMAL);
         
-    }
-    
-    
-    public void applySort(){
         
-    }
-    
-    
-    public void applySlice(){
+        String []list = {"all", "non", "some", "several"}; 
+        DBObject each = new BasicDBObject( "$each", list);
+        DBObject query = new BasicDBObject("_id", _id);
+        DBObject update = new BasicDBObject( "$addToSet",  new BasicDBObject( "arr", each )  );
+        System.out.println("Applying addToSet + $each existing element");
+        this.collection.update(query, update);
         
     }
     
@@ -202,9 +205,6 @@ public class OperatorsOplog {
             System.out.println(o);
         }
         
-//        DBObject update = new BasicDBObject( "$inc", new BasicDBObject("arr.position", 10)  );
-//        WriteResult res = this.collection.update(query, update);
-//        System.out.println(res);
     }
     
     
